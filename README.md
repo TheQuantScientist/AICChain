@@ -1,113 +1,102 @@
 # ACChain: Decentralized AI Compute Allocation Platform
 
-Welcome to **AICChain**, a decentralized platform for AI compute allocation that optimizes resource matching, incentivizes sustainability, and leverages blockchain for transparent transactions. This repository contains a Python-based demo showcasing the core functionality of AICChain, including reinforcement learning (RL) for compute node selection, a simulated blockchain for AICC and AICG tokens, and a community-driven subsidy voting mechanism.
-
-## Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Demo](#demo)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Code Structure](#code-structure)
-- [Dependencies](#dependencies)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ## Overview
-AICChain is designed to connect AI compute providers with users seeking resources for tasks like credit scoring, model training, or inference. The platform uses a reinforcement learning model (PPO from Stable Baselines3) to match compute jobs to nodes based on GPU, bandwidth, latency, and sustainability criteria. A simulated blockchain manages AICC (transactional token) and AICG (governance token) to facilitate payments, community fund contributions, and provider incentives for renewable energy usage.
-
-The demo simulates a credit scoring AI job, demonstrating how AICChain optimizes node selection, processes payments, and rewards sustainable practices while reducing costs and carbon emissions compared to competitors like IO.Net.
+AICChain is a blockchain-based platform designed to efficiently match AI workloads with distributed compute nodes, leveraging reinforcement learning (RL), a dual-token system, and mechanism design for trust and fairness. The platform optimizes resource allocation, ensures truthful reporting, and incentivizes participation through a transparent and decentralized governance model.
 
 ## Features
-- **RL-based Compute Allocation**: Uses PPO to select optimal compute nodes based on job requirements (GPU, bandwidth, latency) and sustainability preferences.
-- **Blockchain Integration**: Simulates AICC token transactions for payments, community fund contributions, and provider rewards.
-- **Sustainability Incentives**: Rewards providers using renewable energy (e.g., solar-powered nodes) with bonus AICC tokens.
-- **Community Governance**: AICG token holders vote on subsidies to reduce user costs, funded by a 10% community fund allocation.
-- **Cost and Carbon Efficiency**: Achieves up to 50% cost savings and significant carbon emission reductions compared to traditional platforms.
-- **Interactive Demo**: User-friendly interface for inputting job requirements and viewing detailed logs of RL decisions, transactions, and outcomes.
 
-## Demo
-The demo (`aicchain.py`) simulates an end-to-end workflow for a credit scoring AI job:
-1. **Input Job Requirements**: Specify GPU count (4-16), bandwidth (50-200 Mbps), and maximum latency (5-20 ms).
-2. **Node Registration**: Displays three compute nodes (two solar-powered, one non-renewable) with varying specs.
-3. **RL Matching**: Trains a PPO model to select the best node, logging state, action probabilities, and rewards.
-4. **Payment Processing**: Transfers AICC tokens from user to provider (90%) and community fund (10%).
-5. **Subsidy Voting**: AICG holders vote to approve a 50% cost subsidy, funded by the community fund.
-6. **Provider Rewards**: Awards bonus AICC for renewable energy usage.
-7. **Results Summary**: Displays effective cost, cost savings (vs. IO.Net), carbon reduction, and final balances.
+### 1. **AI Workload Orchestration**
+- **Reinforcement Learning (RL)**: Uses a PPO-based RL model to dynamically match AI workloads to compute nodes based on latency, bandwidth, energy efficiency, and GPU availability.
+- **Workload Representation**: Defines AI workloads with attributes like required GPUs, data size, compute intensity, and priority.
+- **Compute Node Management**: Tracks node performance metrics (latency, bandwidth, energy, GPU count) to ensure optimal task allocation.
 
-Sample output includes a detailed results table:
-```
-Results Summary:
---------------------------------------------------
-Metric               | Value
---------------------------------------------------
-Effective Cost       | 50 AICC
-Cost Saving          | 50% vs. IO.Net
-Carbon Reduction     | 75%
-User Balance         | 150 AICC
-Provider Balance     | 100 AICC
-Community Fund       | 0 AICC
---------------------------------------------------
-```
+### 2. **Dual-Token System**
+- **AICC (Payment Token)**: Facilitates payments for computational services between clients and nodes. A portion of each transaction contributes to a Community Fund to support equitable access.
+- **AICG (Governance Token)**: Enables stakeholders to vote on network policies, ensuring decentralized governance.
+- **Community Fund**: Accumulates AICC to subsidize access for under-resourced users, promoting inclusivity.
 
-## Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/aicchain.git
-   cd aicchain
-   ```
+### 3. **Truthful Reporting Mechanism**
+- **Performance Reports**: Nodes submit performance metrics, which are hashed and scored for trustworthiness.
+- **Auditing**: A scoring system penalizes discrepancies between reported and actual metrics, ensuring nodes report truthfully.
+- **Node Reliability**: Inactive or untrustworthy nodes are flagged and excluded from task allocation.
 
-2. Create a virtual environment (optional but recommended):
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+### 4. **On-Chain RL Policy Management**
+- **Off-Chain Training**: RL policies are trained off-chain to optimize workload-node matching.
+- **On-Chain Commitment**: Trained policy parameters are hashed and stored on the blockchain for transparency and immutability.
+- **Deterministic Matching**: Ensures consistent and reproducible workload assignments based on trained RL models.
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 5. **Decentralized Governance**
+- **Policy Voting**: Stakeholders use AICG tokens to vote on network policies, such as incentivizing renewable energy use.
+- **Transparent Execution**: All transactions, votes, and policy commitments are recorded on the blockchain.
 
-## Usage
-1. Ensure dependencies are installed (see [Dependencies](#dependencies)).
-2. Run the demo:
-   ```bash
-   python aicchain.py
-   ```
-3. Follow the prompts to input job requirements (or press Enter for defaults: 8 GPUs, 100 Mbps, 15 ms).
-4. Review the detailed logs and results table to understand the workflow.
+## Architecture
+AICChain integrates several components to deliver a robust and scalable solution:
 
-## Code Structure
-- `aicchain.py`: Main script containing the demo logic.
-  - `Blockchain` class: Simulates AICC and AICG token transactions and subsidy voting.
-  - `ComputeAllocationEnv` class: Gym environment for RL-based node matching.
-  - `run_interactive_demo()`: Orchestrates the demo workflow with user input and detailed logs.
+- **ComputeNode & AIWorkload**: Data classes representing nodes and tasks with relevant attributes.
+- **AICChainEnv**: A Gymnasium-based RL environment for training and evaluating workload-node matching policies.
+- **DualTokenSystem**: Manages AICC and AICG tokens, including transfers, payments, and voting.
+- **TruthfulReporting**: Ensures node reliability through report verification and auditing.
+- **RLPolicyManager**: Handles RL model training, policy commitment, and workload matching.
+- **AICChain**: The main orchestrator, integrating all components for end-to-end operation.
 
-## Dependencies
+## Getting Started
+
+### Prerequisites
 - Python 3.8+
-- `numpy`: For numerical computations and state normalization.
-- `gym`: For the RL environment.
-- `stable-baselines3`: For the PPO reinforcement learning model.
-- `torch`: For PyTorch-based RL computations.
+- Dependencies: `numpy`, `torch`, `stable-baselines3`, `gymnasium`
+- Install dependencies:
+  ```bash
+  pip install numpy torch stable-baselines3 gymnasium
+  ```
 
-Install dependencies using:
+### Running the Demo
+The included `main()` function demonstrates AICChain's functionality:
+1. Registers compute nodes with varying performance metrics.
+2. Submits an AI workload from a client.
+3. Trains an RL model to match workloads to nodes.
+4. Orchestrates the workload, processes payments, and contributes to the Community Fund.
+5. Simulates governance by voting on a network policy.
+
+To run the demo:
 ```bash
-pip install numpy gym stable-baselines3 torch
+python aicchain.py
 ```
 
-Or use the provided `requirements.txt`:
-```bash
-pip install -r requirements.txt
+### Example Output
 ```
+=== Starting AICChain Demo ===
+AICChain is a system that connects AI tasks to the best computers using a blockchain for fairness and efficiency.
+
+Step 1: Adding computers (nodes) to the network...
+Registering compute node node1 with 4 GPUs, ready to process AI tasks.
+...
+
+Step 4: Assigning the AI task to the best computer...
+AI model selected node node1 for workload workload1 based on speed, bandwidth, and energy efficiency.
+Task workload1 successfully assigned to node node1!
+
+Step 6: Voting on a new network rule (e.g., rewarding green energy use)...
+The vote passed, and the network rule is updated!
+
+=== AICChain Demo Complete ===
+```
+
+## Use Cases
+- **AI Compute Marketplaces**: Enables clients to access distributed GPU resources for AI training and inference.
+- **Decentralized Cloud Computing**: Provides a trustless alternative to centralized cloud providers.
+- **Sustainable Computing**: Incentivizes energy-efficient nodes through governance policies.
+- **Community-Driven AI**: Uses the Community Fund to democratize access to AI compute resources.
+
+## Future Enhancements
+- **Scalability**: Support for larger networks with thousands of nodes and workloads.
+- **Advanced RL Models**: Integration of more sophisticated RL algorithms for improved matching.
+- **Interoperability**: Compatibility with existing blockchain ecosystems (e.g., Ethereum, Polkadot).
+- **Real-Time Auditing**: Continuous monitoring and auditing of node performance on-chain.
 
 ## Contributing
-We welcome contributions to enhance AICChain! To contribute:
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -m "Add your feature"`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a pull request with a clear description of your changes.
+Contributions are welcome! Please submit pull requests or open issues on our [GitHub repository](#). Focus areas include:
+- Optimizing RL training for faster convergence.
+- Enhancing the truthful reporting mechanism with cryptographic proofs.
+- Adding support for cross-chain token transfers.
 
-Please ensure your code follows PEP 8 style guidelines and includes appropriate tests.
