@@ -1,7 +1,5 @@
 # ACChain: Decentralized AI Compute Allocation Platform
 
-
-## Overview
 AICChain is a blockchain-based platform designed to efficiently match AI workloads with distributed compute nodes, leveraging reinforcement learning (RL), a dual-token system, and mechanism design for trust and fairness. The platform optimizes resource allocation, ensures truthful reporting, and incentivizes participation through a transparent and decentralized governance model.
 
 ## Features
